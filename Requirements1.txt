@@ -1,5 +1,5 @@
-streamlit
-matplotlib
+streamlit>=1.30
 pandas
+matplotlib
 scikit-learn
 fpdf
