@@ -103,35 +103,35 @@ st.set_page_config(page_title="Mumbai AQI Predictor", layout="centered")
 st.title("🌆 Mumbai AQI Prediction")
 st.markdown("Enter a date to get the predicted AQI and pollutant levels for Mumbai city.")
 
-selected_date = st.date_input("📅 Select Date", format="DD-MM-YYYY")
+selected_date = st.date_input("Select Date", format="DD-MM-YYYY")
 predict_btn = st.button("Predict AQI")
 
 if predict_btn:
     date_str = selected_date.strftime("%d-%m-%Y")
     predicted, sub_indices, aqi, category = predict_aqi(date_str)
 
-    st.subheader(f"✅ AQI for {selected_date.strftime('%B %d, %Y')}")
+    st.subheader(f"AQI for {selected_date.strftime('%B %d, %Y')}")
     st.markdown(f"**AQI**: `{aqi}`")
     st.markdown(f"**Category**: `{category}`")
 
     # Health Tip
     tip = get_health_tip(aqi)
-    st.subheader("🩺 Health Tip")
+    st.subheader("Health Tip")
     st.info(get_health_tip(aqi))
 
-    st.subheader("📊 Predicted Pollutants")
+    st.subheader("Predicted Pollutants")
     pollutant_df = pd.DataFrame(predicted.items(), columns=["Pollutant", "Concentration (µg/m³ / mg/m³)"])
     st.table(pollutant_df.style.format({"Concentration (µg/m³ / mg/m³)": "{:.2f}"}))
 
     # Chart
-    st.subheader("📉 Pollutant Levels Chart")
+    st.subheader("Pollutant Levels Chart")
     st.bar_chart(pollutant_df.set_index("Pollutant"))
 
-    st.subheader("📊 AQI Sub-Indices")
+    st.subheader("AQI Sub-Indices")
     df_subindices = pd.DataFrame(sub_indices.items(), columns=["Pollutant", "Sub-Index"])
     st.dataframe(df_subindices)
 
-    st.subheader("📘 AQI Scale")
+    st.subheader("AQI Scale")
     scale_data = [
         ("0-50", "Good", "#00e400"),
         ("51-100", "Satisfactory", "#a3c853"),
@@ -149,5 +149,5 @@ if predict_btn:
     pdf.add_page()
     pdf.add_results(date_str, aqi, category, predicted, tip)
     pdf_data = pdf.output_bytes()
-    st.subheader("📄 Download Report")
-    st.download_button("📄 Download AQI Report (PDF)", data=pdf_data, file_name="Mumbai_AQI_Report.pdf", mime="application/pdf")
+    st.subheader("Download Report")
+    st.download_button("Download AQI Report (PDF)", data=pdf_data, file_name="Mumbai_AQI_Report.pdf", mime="application/pdf")
